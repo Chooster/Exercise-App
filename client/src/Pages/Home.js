@@ -25,7 +25,7 @@ export default class extends Component {
     return (
       <div className="Home">
         <h2>Welcome to the Exercise App!</h2>
-        <p>Time your workouts and keep track of your progression!</p>
+        <p>Time your workouts and keep track of your progression</p>
         <p><Link to="/Login">Sign In</Link></p>
         <p>Or</p>
         <p><Link to="/signup">Create Account</Link></p>

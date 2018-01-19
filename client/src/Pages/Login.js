@@ -12,7 +12,7 @@ export default class extends Component {
     }
   }
 
-  login() {
+  login = () => {
     this.props.Auth.authenticate(() => {
       this.setState({ redirectToReferrer: true })
     })
@@ -29,8 +29,12 @@ export default class extends Component {
 
     return (
       <div className="Login">
-        <p>Login Here!</p>
-        <button onClick={this.login.bind(this)}>Log In</button>
+        <h2>Login</h2>
+        <form>
+          Username: <input type="text" /><br />
+          Password: <input type="text" />
+        </form>
+        <button onClick={() => this.login()}>Log In</button>
         <p>Don't have an account? Sign Up <Link to="/signup">Here</Link>!</p>
       </div>
     )
