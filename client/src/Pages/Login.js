@@ -21,11 +21,15 @@ class Login extends Component {
     this.setState({ password: e.target.value })
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.props.login(this.state.username, this.state.password)
+  }
+
   render() {
-    console.log(this.props)
     if (this.props.authenticated === true) {
       return (
-        <Redirect to='/' />
+        <Redirect to='/workout' />
       )
     }
 
@@ -33,7 +37,7 @@ class Login extends Component {
       <div className="Login">
         <h2>Login</h2>
         <form
-          onSubmit={this.props.login(this.state.username, this.state.password)}
+          onSubmit={this.handleSubmit}
         >
           <label>
             Username:

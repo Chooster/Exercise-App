@@ -8,3 +8,10 @@ export const login = (username, password) => {
     payload: { authenticated: true },
   }
 }
+
+export const createAccount = (username, password, email) => {
+  return {
+    type: 'ACCOUNT_CREATED',
+    payload: { created: true },
+  }
+}

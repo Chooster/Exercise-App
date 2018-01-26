@@ -3,13 +3,6 @@ import * as Pages from './Pages'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={(props) => (
-    this.props.authenticated ?
-    <Component {...props} /> : <Redirect to='/login' />
-  )} />
-)
-
 class App extends Component {
   render() {
     return (
@@ -22,10 +15,18 @@ class App extends Component {
             <Pages.Login {...props} authenticated={this.props.authenticated} />
           )} />
           <Route path='/signup' render={(props) => (
-            <Pages.Signup {...props} authenticated={this.props.authenticated} />
+            <Pages.Signup {...props} created={this.props.created} />
           )} />
-          <PrivateRoute path='/workout' component={ Pages.Workout } />
-          <PrivateRoute path='/logs' component={ Pages.Logs } />
+          <Route path='/workout' render={(props) => (
+            this.props.authenticated ?
+              (<Pages.Workout {...props} authenticated={this.props.authenticated} />)
+              : (<Redirect to='/' />)
+          )} />
+          <Route path='/logs' render={(props) => (
+            this.props.authenticated ?
+              (<Pages.Logs {...props} authenticated={this.props.authenticated} />)
+              : (<Redirect to='/' />)
+          )} />
         </div>
       </Router>
     );
@@ -33,7 +34,10 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { authenticated: state.login.authenticated }
+  return {
+    authenticated: state.login.authenticated,
+    created: state.create.created
+  }
 }
 
 
