@@ -6,7 +6,7 @@ export default class extends Component {
     super(props)
 
     this.state =  {
-      authed: this.props.Auth.isAuthenticated
+      authed: this.props.Auth
     }
   }
 

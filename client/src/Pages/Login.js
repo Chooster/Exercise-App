@@ -1,27 +1,29 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { login } from '../Actions'
 
-export default class extends Component {
+class Login extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       username: '',
       password: '',
-      redirectToReferrer: false,
     }
   }
 
-  login = () => {
-    this.props.Auth.authenticate(() => {
-      this.setState({ redirectToReferrer: true })
-    })
+  handleUsername = (e) => {
+    this.setState({ username: e.target.value })
+  }
+
+  handlePassword = (e) => {
+    this.setState({ password: e.target.value })
   }
 
   render() {
-    const { redirectToReferrer} = this.state
-
-    if (redirectToReferrer === true) {
+    console.log(this.props)
+    if (this.props.authenticated === true) {
       return (
         <Redirect to='/' />
       )
@@ -30,13 +32,34 @@ export default class extends Component {
     return (
       <div className="Login">
         <h2>Login</h2>
-        <form>
-          Username: <input type="text" /><br />
-          Password: <input type="text" />
+        <form
+          onSubmit={this.props.login(this.state.username, this.state.password)}
+        >
+          <label>
+            Username:
+            <input
+              type="text"
+              value={this.state.username}
+              onChange={this.handleUsername}
+            />
+          </label>
+          <label>
+            Password:
+             <input
+               type="text"
+               value={this.state.password}
+               onChange={this.handlePassword}
+             />
+           </label>
+           <input type="submit" value="Log In" />
         </form>
-        <button onClick={() => this.login()}>Log In</button>
+
         <p>Don't have an account? Sign Up <Link to="/signup">Here</Link>!</p>
       </div>
     )
   }
 }
+
+const mapDispatchToProps = { login }
+
+export default connect(null, mapDispatchToProps)(Login)

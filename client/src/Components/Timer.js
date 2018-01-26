@@ -34,23 +34,21 @@ export default class extends Component {
   }
 
   start() {
-    if (this.state.started === false) {
-      this.setState({ started: true })
-      this.setState({
-        timer:
-        setInterval(() => {
-          this.setState({
-            seconds: this.state.seconds + 1
-          })
-        }, 1000)
-      })
-    }
+    this.setState({ started: true })
+    this.setState({
+      timer:
+      setInterval(() => {
+        this.setState({
+          seconds: this.state.seconds + 1
+        })
+      }, 1000)
+    })
   }
 
   stop() {
     this.setState({ started: false })
-    clearInterval(this.state.timer)
     this.setState({ prevTimer: this.state.timer })
+    clearInterval(this.state.timer)
   }
 
   reset() {
@@ -59,12 +57,18 @@ export default class extends Component {
     this.setState({ seconds: 0, minutes: 0, hours: 0 })
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.timer)
+  }
+
   render() {
     return (
       <div>
         <p>{this.formattedSeconds()}</p>
-        <button onClick={() => this.start()}>Start</button>
-        <button onClick={() => this.stop()}>Stop</button>
+        {this.state.started ?
+          <button onClick={() => this.stop()}>Stop</button> :
+          <button onClick={() => this.start()}>Start</button>
+        }
         <button onClick={() => this.reset()}>Reset</button>
       </div>
     )

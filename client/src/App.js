@@ -1,22 +1,11 @@
 import React, { Component } from 'react'
 import * as Pages from './Pages'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-
-const Auth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true
-    setTimeout(cb, 100)
-  },
-  signout(cb) {
-    this.isAuthenticated = false
-    setTimeout(cb, 100)
-  }
-}
+import { connect } from 'react-redux'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
-    Auth.isAuthenticated === true ?
+    this.props.authenticated ?
     <Component {...props} /> : <Redirect to='/login' />
   )} />
 )
@@ -27,13 +16,13 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path='/' render={(props) => (
-            <Pages.Home {...props} Auth={Auth} />
+            <Pages.Home {...props} authenticated={this.props.authenticated} />
           )} />
           <Route path='/login' render={(props) => (
-            <Pages.Login {...props} Auth={Auth} />
+            <Pages.Login {...props} authenticated={this.props.authenticated} />
           )} />
           <Route path='/signup' render={(props) => (
-            <Pages.Signup {...props} Auth={Auth} />
+            <Pages.Signup {...props} authenticated={this.props.authenticated} />
           )} />
           <PrivateRoute path='/workout' component={ Pages.Workout } />
           <PrivateRoute path='/logs' component={ Pages.Logs } />
@@ -43,4 +32,9 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return { authenticated: state.login.authenticated }
+}
+
+
+export default connect(mapStateToProps)(App)

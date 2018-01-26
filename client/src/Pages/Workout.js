@@ -4,10 +4,10 @@ import Timer from '../Components/Timer'
 export default () => {
   return (
     <div>
-      <p>Total Session Time:</p>
+      <p>Current Session:</p>
       <Timer />
 
-      <p>Current Rest Time:</p>
+      <p>Rest:</p>
       <Timer />
     </div>
   )
